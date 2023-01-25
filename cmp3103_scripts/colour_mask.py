@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# An example of TurtleBot 3 subscribe to camera topic and filer out colours
+# An example of TurtleBot 3 subscribe to camera topic and mask colours
 # Written for humble
 
 import rclpy
@@ -11,9 +11,9 @@ from cv_bridge import CvBridge # Package to convert between ROS and OpenCV Image
 import cv2
 import numpy as np
 
-class ColourHighlight(Node):
+class ColourMask(Node):
     def __init__(self):
-        super().__init__('colour_highlight')
+        super().__init__('colour_mask')
         self.pub_video_hsv = self.create_publisher(Image, 'video/hsv', 10)  
         self.pub_video_mask = self.create_publisher(Image, 'video/mask', 10)       
         self.sub_camera = self.create_subscription(Image, '/camera/image_raw', self.camera_callback, 10)
@@ -40,18 +40,18 @@ class ColourHighlight(Node):
         #self.get_logger().info('Publishing video frame')
 
 def main(args=None):
-    print('Starting colour_highlight.py.')
+    print('Starting colour_mask.py.')
 
     rclpy.init(args=args)
 
-    colour_highlight = ColourHighlight()
+    colour_mask = ColourMask()
 
-    rclpy.spin(colour_highlight)
+    rclpy.spin(colour_mask)
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-    colour_highlight.destroy_node()
+    colour_mask.destroy_node()
     rclpy.shutdown()
 
 if __name__ == '__main__':
