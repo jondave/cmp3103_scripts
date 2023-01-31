@@ -20,8 +20,10 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'move_square = cmp3103_scripts.move_square:main',            
-            'colour_mask = cmp3103_scripts.colour_mask:main'
+            'move_square = cmp3103_scripts.move_square:main',
+            'colour_mask = cmp3103_scripts.colour_mask:main',
+            'colour_center = cmp3103_scripts.colour_center:main',
+            'colour_mover = cmp3103_scripts.colour_mover:main'
         ],
     },
 )
