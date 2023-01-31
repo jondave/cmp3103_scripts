@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
-# An example of TurtleBot 3 subscribe to camera topic and mask colours
+# An example of TurtleBot 3 subscribe to camera topic, mask colours, find and display contours
 # Written for humble
 # cv2 image types - http://wiki.ros.org/cv_bridge/Tutorials/ConvertingBetweenROSImagesAndOpenCVImagesPython
+# Onine colour picker - https://redketchup.io/color-picker
 
 import rclpy
 from rclpy.node import Node
@@ -15,7 +16,7 @@ import matplotlib.pyplot as plt
 
 class ColourCenter(Node):
     def __init__(self):
-        super().__init__('colour_mask')
+        super().__init__('colour_center')
         self.pub_video_hsv = self.create_publisher(Image, 'video/hsv', 10)
         self.pub_video_mask = self.create_publisher(Image, 'video/mask', 10)
         self.pub_video_contours = self.create_publisher(Image, 'video/contours', 10)
@@ -29,7 +30,7 @@ class ColourCenter(Node):
         #self.get_logger().info("camera_callback")
 
         # Convert ROS Image message to OpenCV image
-        current_frame = self.br.imgmsg_to_cv2(data, desired_encoding='passthrough')
+        current_frame = self.br.imgmsg_to_cv2(data, desired_encoding='passthrough') # 'bgr8'
 
         # Convert image to HSV
         current_frame_hsv = cv2.cvtColor(current_frame, cv2.COLOR_BGR2HSV)

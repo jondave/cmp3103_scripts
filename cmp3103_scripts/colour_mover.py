@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
-# An example of TurtleBot 3 subscribe to camera topic and mask colours
+# An example of TurtleBot 3 subscribe to camera topic, mask colours, find and display contours, and move robot to center the object in image frame
 # Written for humble
 # cv2 image types - http://wiki.ros.org/cv_bridge/Tutorials/ConvertingBetweenROSImagesAndOpenCVImagesPython
+# Onine colour picker - https://redketchup.io/color-picker
 
 import rclpy
 from rclpy.node import Node
@@ -15,7 +16,7 @@ import numpy as np
 
 class ColourMover(Node):
     def __init__(self):
-        super().__init__('colour_mask')
+        super().__init__('colour_mover')
         
         # publish to the image topics for the different images from opencv
         self.pub_video_hsv = self.create_publisher(Image, 'video/hsv', 10)
@@ -36,7 +37,7 @@ class ColourMover(Node):
         #self.get_logger().info("camera_callback")
 
         # Convert ROS Image message to OpenCV image
-        current_frame = self.br.imgmsg_to_cv2(data, desired_encoding='passthrough')
+        current_frame = self.br.imgmsg_to_cv2(data, desired_encoding='passthrough') # 'bgr8'
 
         # Convert image to HSV
         current_frame_hsv = cv2.cvtColor(current_frame, cv2.COLOR_BGR2HSV)
@@ -62,8 +63,7 @@ class ColourMover(Node):
             # Draw a circle based centered at centroid coordinates
             # cv2.circle(image, center_coordinates, radius, color, thickness) -1 px will fill the circle
             cv2.circle(current_frame, (round(cx), round(cy)), 50, (0, 255, 0), -1)
-            
-            
+                        
             # find height/width of robot camera image from ros2 topic echo /camera/image_raw height: 1080 width: 1920
             self.tw=Twist()
 
